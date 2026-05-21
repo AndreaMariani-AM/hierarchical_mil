@@ -1,7 +1,6 @@
-# Hierarchical Expert MIL for IBD Classification from Whole-Slide Images
+# Hierarchical Expert MIL Classification from Whole-Slide Images
 
-> **Goal**: Classify Whole-Slide Images (WSI) of intestinal biopsies as
-> Crohn's Disease (CD) vs Ulcerative Colitis (UC) using a hierarchical
+> **Goal**: Classify Whole-Slide Images (WSI) using a hierarchical
 > multi-expert Multiple Instance Learning (MIL) framework that reasons
 > across three spatial scales: **regions** (2048×2048), **patches**
 > (256×256) and **cells** (sub-patch 16×16 dense token grids).
@@ -57,7 +56,7 @@ slide-level prediction.
 ## Project Structure
 
 ```
-IBD_predictive_model/
+Predictive_model/
 ├── configs/                        # YAML configuration files
 │   ├── base_config.yaml            #   training & fold config
 │   └── feature_extraction.yaml     #   segmentation / tiling / FM config
@@ -485,7 +484,7 @@ the scale dependency on bag size, matching the normalisation applied in
 the fusion gating step.
 
 The auxiliary losses provide **deep supervision** — each expert is
-independently trained to classify IBD subtypes at its own scale.  The
+independently trained to classify subtypes at its own scale.  The
 `Loss_cell` term only kicks in once `cell_warmup_start` epochs have
 elapsed (see Cell Warmup Curriculum in Scale Dropout section below).
 
@@ -518,7 +517,7 @@ for monitoring.
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url> && cd IBD_predictive_model
+git clone <repo-url> && cd predictive_model
 
 # 2. Create / activate conda environment (recommended)
 mamba create -n ibd_mil python=3.10
@@ -543,7 +542,7 @@ Key dependencies: `torch`, `lightning`, `lazyslide`, `wsidata`,
 ```bash
 cd sbatchers
 sbatch run_feature_extraction.sh \
-    --array ../data/metadata/random_150_UC_150_CD_UCL_IBD_slides.csv \
+    --array ../data/metadata/slides.csv \
     --config ../configs/feature_extraction.yaml
 ```
 
